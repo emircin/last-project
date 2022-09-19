@@ -17,11 +17,12 @@ const Detail = () => {
     const [addComment, SetAddComment] = useState("")
 
     useEffect(() => {
-        handleDetail(id)
-        commentAdd()
-    }, [id])
+        handleDetail()
+    }, [])
 
-    const handleDetail = (id) => {
+    let showComment;
+
+    const handleDetail = (e) => {
 
         const axios = require('axios');
 
@@ -43,6 +44,8 @@ const Detail = () => {
             });
     }
 
+    showComment = handleDetail;
+
 
 
     const addDefaultSrc = (e) => {
@@ -52,7 +55,8 @@ const Detail = () => {
         navigate(`/update-blog`, { state: { detailCard } })
     }
 
-    const commentAdd = async () => {
+    const commentAdd = (e) => {
+        e.preventDefault();
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Token ${JSON.parse(localStorage.getItem('token'))}`);
         myHeaders.append("Content-Type", "application/json");
@@ -72,8 +76,8 @@ const Detail = () => {
         fetch(`http://127.0.0.1:8000/cards/comment/${detailCard?.id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                navigate(`/detail/${detailCard?.id}`)
-                SetAddComment(null)
+                showComment()
+                SetAddComment("")
 
             })
             .catch(error => console.log('error', error));
@@ -136,11 +140,11 @@ const Detail = () => {
                             : null}
 
 
-                        <Form>
+                        <Form onSubmit={commentAdd}>
                             <Form.Group className="my-5" controlId="exampleForm.ControlTextarea1">
                                 <Form.Label className='h5' >AddComment</Form.Label>
-                                <Form.Control as="textarea" onChange={e => (SetAddComment(e.target.value))} rows={2} className='w-100 mb-4' />
-                                <Button variant="info" onClick={commentAdd} className='w-25' type="submit">
+                                <Form.Control as="textarea" onChange={e => (SetAddComment(e.target.value))} value={addComment ?? "" } rows={2} className='w-100 mb-4' />
+                                <Button variant="info" className='w-25' type="submit">
                                     Add Comment
                                 </Button>
                             </Form.Group>
