@@ -13,11 +13,14 @@ const Detail = () => {
     const { currentuser } = useContext(AuthContext)
     const navigate = useNavigate();
     const [detailCard, SetDetailCard] = useState([])
-    console.log(detailCard)
     const [addComment, SetAddComment] = useState("")
+    const [addLike, SetAddLike] = useState("")
+    const [getLike, SetGetLike] = useState("")
+    console.log(getLike)
 
     useEffect(() => {
         handleDetail()
+        getLikeF()
     }, [])
 
     let showComment;
@@ -99,6 +102,52 @@ const Detail = () => {
             .then(result => navigate(-1))
             .catch(error => console.log('error', error));
     }
+
+    const getLikeF = async () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Token ${JSON.parse(localStorage.getItem('token'))}`);
+        myHeaders.append("Content-Type", "application/json");
+
+
+        const requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(`http://127.0.0.1:8000/cards/likes/${id}`, requestOptions)
+        .then(response => response.json())
+        .then(result => SetGetLike(result))
+        .catch(error => console.log('error', error));
+    }
+
+    const like = async () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Token ${JSON.parse(localStorage.getItem('token'))}`);
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "card_id": id
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(`http://127.0.0.1:8000/cards/likes/${id}`, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            SetAddLike(result)
+            getLikeF()
+        
+        }
+        )
+        .catch(error => console.log('error', error));
+}
+
     return (
         <div>
             <Container>
@@ -118,18 +167,31 @@ const Detail = () => {
                             by {detailCard?.author}
                         </Card.Text>
 
-                        <div className='my-2'>
+                        <button className='my-2' onClick={like}>
+                            {getLike?.length == 0 ? 
                             <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="22"
-                                height="22"
-                                fill="currentColor"
-                                className="bi bi-chat-left-dots-fill mx-3 text-muted"
-                                viewBox="0 0 16 16"
-                            >
-                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                            </svg>
-                            {detailCard?.comment_count}</div>
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="22"
+                            height="22"
+                            fill="currentColor"
+                            className="bi bi-suit-heart-fill mx-3 text-muted"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+                          </svg>
+                          :
+                          <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="22"
+                          height="22"
+                          fill="red"
+                          className="bi bi-suit-heart-fill mx-3 text-muted"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+                        </svg> 
+                        }
+              </button>
 
                         {detailCard?.author === currentuser ?
                             <div className='d-flex justify-content-center'>

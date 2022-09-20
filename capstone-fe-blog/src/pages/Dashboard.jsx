@@ -8,6 +8,7 @@ const Dashboard = () => {
 
 
     const [cardsList, SetCardsList] = useState([])
+    console.log(cardsList)
 
     useEffect(() => {
       cardList()
