@@ -41,6 +41,26 @@ input[type="text"]:focus{
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.content-body{
+  height: 11rem;
+}
 .content-body:hover{
-background-color: #ccc;
+background-color: #0dcaf0;
+color: #f8f9fa !important;
+}
+.content-body:hover .time-ago{
+  color: #f8f9fa !important;
+}
+.pagination > li > a:hover,
+.pagination > li > a:active
+{
+  background-color: #f8f9fa;
+}
+.page-link{
+  color: #0dcaf0 !important;
+}
+.active .page-link{
+ background: #0dcaf0 !important;
+ border-color: #0dcaf0 !important;
+ color: white !important;
 }

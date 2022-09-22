@@ -42,7 +42,7 @@ const Dashboard = () => {
         let items = [];
             for (let number = 1; number <= Math.ceil(cardsList?.count/6); number++) {
                 items.push(
-            <Pagination.Item onClick={forward(number)} key={number} active={number === count}>
+            <Pagination.Item className='pagination' onClick={forward(number)} key={number} active={number === count}>
                     {number}
             </Pagination.Item>
 );

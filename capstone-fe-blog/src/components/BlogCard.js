@@ -3,6 +3,7 @@ import { Card, Col } from "react-bootstrap";
 import NoImage from "../assets/no-image-icon.jpg"
 import "../App.css"
 import { useNavigate } from 'react-router-dom';
+import ReactTimeAgo from 'react-time-ago'
 
 const BlogCard = ({card}) => {
 
@@ -50,16 +51,12 @@ const BlogCard = ({card}) => {
             src={card?.image}
           />
           <Card.Body className="content-body" onClick={handleDetail} style={{ cursor: "pointer" }}>
-            <Card.Title>{card?.title}</Card.Title>
-            <Card.Text className="text-muted my-2">
-              {" "}
-              <small>{card?.date_created}</small>{" "}
-            </Card.Text>
-            <Card.Text className="content-text">
+            <Card.Title className="mb-3">{card?.title}</Card.Title>
+            <Card.Text className="content-text h-50">
               {card?.content}
             </Card.Text>
-            <Card.Text>
-              <small>by {card?.author}</small>
+            <Card.Text className="text-muted my-2 text-end time-ago">
+              <small> published by {card?.author} <ReactTimeAgo date={card?.date_created} locale="en-US"/> </small>
             </Card.Text>
           </Card.Body>
           <Card.Footer>
