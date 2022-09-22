@@ -5,7 +5,7 @@ from django.utils import timezone
 class Cards(models.Model):
     title = models.CharField(max_length=50)
     image = models.CharField(max_length=250)
-    content = models.CharField(max_length=350)
+    content = models.CharField(max_length=1000)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -28,3 +28,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+class Views(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card = models.ForeignKey(Cards, on_delete=models.CASCADE, related_name="views")
+
+    def __str__(self):
+        return f'{self.card}'

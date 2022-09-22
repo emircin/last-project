@@ -41,3 +41,6 @@ input[type="text"]:focus{
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.content-body:hover{
+background-color: #ccc;
+}

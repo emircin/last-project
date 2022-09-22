@@ -16,7 +16,6 @@ const Detail = () => {
     const [addComment, SetAddComment] = useState("")
     const [addLike, SetAddLike] = useState("")
     const [getLike, SetGetLike] = useState("")
-    console.log(getLike)
 
     useEffect(() => {
         handleDetail()

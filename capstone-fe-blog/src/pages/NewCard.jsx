@@ -37,7 +37,6 @@ const NewCard = () => {
             .then(response => response.json())
             .then(result =>{
                 navigate("/")
-                console.log(result)
             } )
             .catch(error => console.log('error', error));
 

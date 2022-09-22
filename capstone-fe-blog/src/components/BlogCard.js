@@ -12,9 +12,33 @@ const BlogCard = ({card}) => {
   const addDefaultSrc = (e) =>{
     e.target.src = NoImage
   }
-  const handleDetail = () =>{
-    navigate("detail/" + card?.id)
-  }
+
+  const handleDetail = async () => {
+
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Token ${JSON.parse(localStorage.getItem('token'))}`);
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+          "card_id": card?.id
+      });
+
+      const requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+      };
+
+      fetch(`http://127.0.0.1:8000/cards/views/${card?.id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        navigate("detail/" + card?.id)
+      
+      }
+      )
+      .catch(error => console.log('error', error));
+}
  
   return (
       <Col xs={12} sm={6} lg={4} className="mt-5 d-flex justify-content-center">
@@ -25,7 +49,7 @@ const BlogCard = ({card}) => {
             style={{ height: "11rem" }}
             src={card?.image}
           />
-          <Card.Body onClick={handleDetail} style={{ cursor: "pointer" }}>
+          <Card.Body className="content-body" onClick={handleDetail} style={{ cursor: "pointer" }}>
             <Card.Title>{card?.title}</Card.Title>
             <Card.Text className="text-muted my-2">
               {" "}
@@ -62,7 +86,7 @@ const BlogCard = ({card}) => {
                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
               </svg>
-              1
+              {card?.views_count}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"

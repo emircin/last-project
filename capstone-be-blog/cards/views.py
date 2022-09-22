@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from .pagination import MyLimitOffsetPagination
 from  rest_framework import generics 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .models import Cards, Comment, Likes, User
-from .serializers import CardsSerializer, CommentSerializer, LikesSerializer
+from .models import Cards, Comment, Likes, Views
+from .serializers import CardsSerializer, CommentSerializer, LikesSerializer, ViewsSerializer
 
 class CardsView(generics.ListCreateAPIView):
     queryset = Cards.objects.all()
     serializer_class = CardsSerializer
+    pagination_class = MyLimitOffsetPagination
 
     def perform_create(self, serializer):
          serializer.save(author=self.request.user)
@@ -48,6 +49,18 @@ class LikesView(generics.ListCreateAPIView):
             serializer.save(user=self.request.user)
         else:
             Likes.objects.filter(user=self.request.user).delete()
+
+class ViewsView(generics.ListCreateAPIView):
+    queryset = Views.objects.all()
+    serializer_class = ViewsSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        card = self.kwargs["card_id"]
+        return Views.objects.filter(card_id=card)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
             
 
         
