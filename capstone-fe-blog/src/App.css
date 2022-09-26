@@ -23,7 +23,7 @@ textarea{
   outline: none !important;
   box-shadow:none !important;
   border: none !important;
-  border-bottom:1px solid #ccc !important;
+  border:1px solid #ccc !important;
   border-radius: 0 !important;
 }
 textarea:focus{
@@ -36,13 +36,13 @@ input[type="text"]:focus{
 }
 .content-text{
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .content-body{
-  height: 11rem;
+  height: 14rem;
 }
 .content-body:hover{
 background-color: #0dcaf0;
@@ -63,4 +63,7 @@ color: #f8f9fa !important;
  background: #0dcaf0 !important;
  border-color: #0dcaf0 !important;
  color: white !important;
+}
+.icon-div{
+  padding-right: 1rem;
 }

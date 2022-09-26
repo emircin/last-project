@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import NoImage from "../assets/no-image-icon.jpg"
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
+import Moment from 'react-moment';
 
 const Detail = () => {
 
@@ -160,7 +161,7 @@ const Detail = () => {
                             {detailCard?.content}
                         </Card.Text>
                         <Card.Text>
-                            {detailCard?.date_created}
+                        <Moment format="D MMM YYYY" withTitle>{detailCard?.date_created}</Moment>
                         </Card.Text>
                         <Card.Text>
                             by {detailCard?.author}
@@ -200,17 +201,6 @@ const Detail = () => {
 
                             : null}
 
-
-                        <Form onSubmit={commentAdd}>
-                            <Form.Group className="my-5" controlId="exampleForm.ControlTextarea1">
-                                <Form.Label className='h5' >AddComment</Form.Label>
-                                <Form.Control as="textarea" onChange={e => (SetAddComment(e.target.value))} value={addComment ?? "" } rows={2} className='w-100 mb-4' />
-                                <Button variant="info" className='w-25' type="submit">
-                                    Add Comment
-                                </Button>
-                            </Form.Group>
-                        </Form>
-
                         {detailCard?.comment?.length > 0 ?
                             <div>
                                 <h5>Comments</h5>
@@ -229,6 +219,15 @@ const Detail = () => {
                             :
                             "No Comments"
                         }
+
+<Form onSubmit={commentAdd}>
+                            <Form.Group className="my-5" controlId="exampleForm.ControlTextarea1">
+                                <Form.Control as="textarea" onChange={e => (SetAddComment(e.target.value))} value={addComment ?? "" } rows={8} className='w-100 mb-4' />
+                                <Button variant="info" className='w-25' type="submit">
+                                    Add Comment
+                                </Button>
+                            </Form.Group>
+                        </Form>
 
                     </Card.Body>
 

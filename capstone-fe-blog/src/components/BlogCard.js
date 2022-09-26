@@ -4,14 +4,20 @@ import NoImage from "../assets/no-image-icon.jpg"
 import "../App.css"
 import { useNavigate } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const BlogCard = ({card}) => {
 
   const navigate = useNavigate();
-
-
+  const { currentuser } = useContext(AuthContext)
+  
   const addDefaultSrc = (e) =>{
     e.target.src = NoImage
+  }
+
+  const handleLogin = () => {
+    navigate("login/")
   }
 
   const handleDetail = async () => {
@@ -39,6 +45,7 @@ const BlogCard = ({card}) => {
       }
       )
       .catch(error => console.log('error', error));
+
 }
  
   return (
@@ -50,17 +57,20 @@ const BlogCard = ({card}) => {
             style={{ height: "11rem" }}
             src={card?.image}
           />
-          <Card.Body className="content-body" onClick={handleDetail} style={{ cursor: "pointer" }}>
-            <Card.Title className="mb-3">{card?.title}</Card.Title>
-            <Card.Text className="content-text h-50">
-              {card?.content}
-            </Card.Text>
-            <Card.Text className="text-muted my-2 text-end time-ago">
-              <small> published by {card?.author} <ReactTimeAgo date={card?.date_created} locale="en-US"/> </small>
-            </Card.Text>
-          </Card.Body>
+          <Card.Body className="content-body" onClick={currentuser ? handleDetail : handleLogin } style={{ cursor: "pointer" }}>
+          <Card.Title className="mb-3">{card?.title}</Card.Title>
+          <Card.Text className="content-text h-50">
+            {card?.content}
+          </Card.Text>
+          <Card.Text className="text-muted my-2 text-end time-ago">
+            <small> published <ReactTimeAgo date={card?.date_created} locale="en-US"/> <br/> by {card?.author} </small>
+          </Card.Text>
+        </Card.Body>
+          
+
           <Card.Footer>
-            <div className="d-flex justify-content-start align-items-center">
+            <div className="d-flex justify-content-center align-items-center icon-div">
+              
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -72,6 +82,7 @@ const BlogCard = ({card}) => {
                 <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
               </svg>
               {card?.likes_count}
+                         
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -84,6 +95,8 @@ const BlogCard = ({card}) => {
                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
               </svg>
               {card?.views_count}
+              
+              
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -95,6 +108,7 @@ const BlogCard = ({card}) => {
                 <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
               </svg>
               {card?.comment_count}
+              
             </div>
           </Card.Footer>
         </Card>
